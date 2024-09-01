@@ -4,10 +4,17 @@
 #include "MPointerList.h"
 
 // Añade un nuevo puntero a la lista
-void LinkedList::newMpointer(int id, void* address) {
-    Node* newNode = new Node(id, address, 1);  // Crea un nuevo nodo con una referencia
-    newNode->next = head;  // El nuevo nodo apunta al primer nodo actual
-    head = newNode;  // El nuevo nodo se convierte en el primer nodo
+void LinkedList::newMpointer(int id, void* address, DataType type) {
+    Node* newNode = new Node(id, address, 1, nullptr, type);  // Crea un nuevo nodo con una referencia
+    if (head == nullptr) {
+        head = newNode;  // Si la lista está vacía, el nuevo nodo es la cabeza
+    } else {
+        Node* current = head;
+        while (current->next != nullptr) {
+            current = current->next;  // Avanza al final de la lista
+        }
+        current->next = newNode;  // El nuevo nodo se convierte en el último nodo
+    }
 }
 
 // Aumenta el conteo de referencias de un nodo específico
@@ -20,11 +27,10 @@ void LinkedList::addRef(int identifier) {
         }
         current = current->next;
     }
-    // Manejo de error si el nodo no se encuentra (opcional)
 }
 
 // Disminuye el conteo de referencias de un nodo específico
-int LinkedList::deleteRef(int identifier) {
+int LinkedList::substractRef(int identifier) {
     Node* current = head;
     while (current != nullptr) {
         if (current->id == identifier) {
@@ -33,12 +39,88 @@ int LinkedList::deleteRef(int identifier) {
         }
         current = current->next;
     }
-    // Manejo de error si el nodo no se encuentra (opcional)
     return -1;  // Retorna un valor no válido si no se encuentra
 }
 
-// Elimina un puntero de la lista (no utilizado en tu código actual)
-void LinkedList::deleteMpointer(int identifier) {
+// Imprime la lista para depuración
+void LinkedList::print() {
+    cout << "-----------INICIO--LISTA-----------" << endl;
+    Node* current = head;
+    while (current != nullptr) {
+        // Imprimir basado en el tipo
+        switch (current->type) {
+            case DataType::INT: {
+                int* intPtr = static_cast<int*>(current->address);
+                cout << "ID: " << current->id
+                     << ", Direccion: " << current->address
+                     << ", Referencias: " << current->refCount
+                     << ", Valor: " << *intPtr
+                     << endl;
+                break;
+            }
+            case DataType::DOUBLE: {
+                double* doublePtr = static_cast<double*>(current->address);
+                cout << "ID: " << current->id
+                     << ", Direccion: " << current->address
+                     << ", Referencias: " << current->refCount
+                     << ", Valor: " << *doublePtr
+                     << endl;
+                break;
+            }
+            case DataType::FLOAT: {
+                float* floatPtr = static_cast<float*>(current->address);
+                cout << "ID: " << current->id
+                     << ", Direccion: " << current->address
+                     << ", Referencias: " << current->refCount
+                     << ", Valor: " << *floatPtr
+                     << endl;
+                break;
+            }
+        }
+        current = current->next;
+    }
+    cout << "------------FIN--LISTA------------" << endl;
+}
+
+// Retorna el número de nodos en la lista
+int LinkedList::getSize() {
+    int count = 0;
+    Node* current = head;
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Devuelve el ID del nodo en el índice dado
+int LinkedList::getIDAt(int index) {
+    Node* current = head;
+    int count = 0;
+    while (current != nullptr) {
+        if (count == index) {
+            return current->id;
+        }
+        count++;
+        current = current->next;
+    }
+    return -1;  // Retorna -1 si el índice está fuera de rango
+}
+
+// Devuelve el conteo de referencias para un nodo con un ID dado
+int LinkedList::getRefCount(int id) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->id == id) {
+            return current->refCount;
+        }
+        current = current->next;
+    }
+    return -1;  // Retorna -1 si el nodo no se encuentra
+}
+
+// Elimina un nodo de la lista basado en el identificador (ID)
+void LinkedList::remove(int identifier) {
     Node* current = head;
     Node* previous = nullptr;
 
@@ -52,22 +134,11 @@ void LinkedList::deleteMpointer(int identifier) {
     if (current == nullptr) return;
 
     // Nodo encontrado, actualizar punteros
-    if (previous == nullptr) {  // Si es el primero
-        head = current->next;
+    if (previous == nullptr) {  // Si es el primer nodo
+        head = current->next;   // Mueve la cabeza al siguiente nodo
     } else {
-        previous->next = current->next;
+        previous->next = current->next;  // Salta el nodo actual
     }
-    delete current;  // Libera memoria
-}
 
-// Imprime la lista para depuración
-void LinkedList::print() {
-    Node* current = head;
-    while (current != nullptr) {
-        cout << "ID: " << current->id
-             << ", Address: " << current->address
-             << ", RefCount: " << current->refCount
-             << endl;
-        current = current->next;
-    }
+    delete current;  // Libera la memoria del nodo eliminado
 }
