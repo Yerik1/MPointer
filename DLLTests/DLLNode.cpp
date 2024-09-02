@@ -1,38 +1,36 @@
 //
 // Created by yerik on 8/31/24.
 //
-#include "../MPointerFiles/MPointer.h"
+#include "Headers/DLLNode.h"
+
+// Definiciones de las funciones miembro deben estar también en el .h
+
 template <typename T>
-class DLLNode {
-private:
-    T data;
-    DLLNode<T>* prev;
-    DLLNode<T>* next;
+T DLLNode<T>::getData() const {
+    return data;
+}
 
-public:
-    DLLNode(T valor) : data(valor), prev(nullptr), next(nullptr) {}
+template <typename T>
+void DLLNode<T>::setData(T valor) {
+    data = valor;
+}
 
-    T getData() const {
-        return data;
-    }
+template <typename T>
+MPointer<DLLNode<T>> DLLNode<T>::getPrev() const {
+    return prev;
+}
 
-    void setData(T valor) {
-        data = valor;
-    }
+template <typename T>
+void DLLNode<T>::setPrev(MPointer<DLLNode<T>> nodo) {
+    prev = nodo;
+}
 
-    DLLNode<T>* getPrev() const {
-        return prev;
-    }
+template <typename T>
+MPointer<DLLNode<T>> DLLNode<T>::getNext() const {
+    return next;
+}
 
-    void setPrev(DLLNode<T>* nodo) {
-        prev = nodo;
-    }
-
-    DLLNode<T>* getNext() const {
-        return next;
-    }
-
-    void setNext(DLLNode<T>* nodo) {
-        next = nodo;
-    }
-};
+template <typename T>
+void DLLNode<T>::setNext(MPointer<DLLNode<T>> nodo) {
+    next = nodo;
+}

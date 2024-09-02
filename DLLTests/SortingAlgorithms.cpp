@@ -2,41 +2,40 @@
 // Created by yerik on 8/31/24.
 //
 
-#include "Headers/DLLNode.h"
-#include "Headers/DoubleLinkedList.h"
+#include "Headers/SortingAlgorithms.h"
 
 // Función para intercambiar manualmente los datos de dos nodos
 template <typename T>
-void swap(DLLNode<T>* a, DLLNode<T>* b) {
-    T temp = a->getData();  // Corrección aquí
-    a->setData(b->getData());  // Corrección aquí
-    b->setData(temp);  // Corrección aquí
+void swap(MPointer<DLLNode<T>> a, MPointer<DLLNode<T>> b) {
+    T temp = (*a).getData();  // Corrección aquí
+    (*a).setData((*b).getData());  // Corrección aquí
+    (*b).setData(temp);  // Corrección aquí
 }
 
 // Algoritmo de QuickSort
 template <typename T>
-DLLNode<T>* partition(DLLNode<T>* bajo, DLLNode<T>* alto) {
-    T pivote = alto->getData();  // Corrección aquí
-    DLLNode<T>* i = bajo->getPrev();  // Corrección aquí
+MPointer<DLLNode<T>> partition(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> alto) {
+    T pivote = (*alto).getData();  // Corrección aquí
+    MPointer<DLLNode<T>> i = (*bajo).getPrev();  // Corrección aquí
 
-    for (DLLNode<T>* j = bajo; j != alto; j = j->getNext()) {  // Corrección aquí
-        if (j->getData() <= pivote) {  // Corrección aquí
-            i = (i == nullptr) ? bajo : i->getNext();  // Corrección aquí
+    for (MPointer<DLLNode<T>> j = bajo; !j.isSameAddress(alto); j = (*j).getNext()) {  // Corrección aquí
+        if ((*j).getData() <= pivote) {  // Corrección aquí
+            i = (!i.getHasValue()) ? bajo : (*i).getNext();  // Corrección aquí
             swap(i, j);  // Corrección aquí
         }
     }
-    i = (i == nullptr) ? bajo : i->getNext();  // Corrección aquí
+    i = (!i.getHasValue()) ? bajo : (*i).getNext();  // Corrección aquí
     swap(i, alto);  // Corrección aquí
     return i;
 }
 
 
 template <typename T>
-void quickSortRec(DLLNode<T>* bajo, DLLNode<T>* alto) {
-    if (alto != nullptr && bajo != alto && bajo != alto->getNext()) {  // Corrección aquí
-        DLLNode<T>* p = partition(bajo, alto);  // Corrección aquí
-        quickSortRec(bajo, p->getPrev());  // Corrección aquí
-        quickSortRec(p->getNext(), alto);  // Corrección aquí
+void quickSortRec(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> alto) {
+    if (!alto.getHasValue() && !bajo.isSameAddress(alto) && !bajo.isSameAddress((*alto).getNext())) {  // Corrección aquí
+        MPointer<DLLNode<T>> p = partition(bajo, alto);  // Corrección aquí
+        quickSortRec(bajo, (*p).getPrev());  // Corrección aquí
+        quickSortRec((*p).getNext(), alto);  // Corrección aquí
     }
 }
 
@@ -51,7 +50,7 @@ void bubbleSort(ListaDobleEnlazada<T>& lista) {
     if (!lista.getHead()) return;  // Corrección aquí
 
     bool swapped;
-    DLLNode<T>* actual;
+    MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
 
     do {
         swapped = false;
@@ -72,10 +71,10 @@ template <typename T>
 void insertionSort(ListaDobleEnlazada<T>& lista) {
     if (!lista.getHead()) return;  // Corrección aquí
 
-    DLLNode<T>* actual = lista.getHead()->getNext();  // Corrección aquí
+    MPointer<DLLNode<T>> actual = lista.getHead()->getNext();  // Corrección aquí
     while (actual != nullptr) {
         T clave = actual->getData();  // Corrección aquí
-        DLLNode<T>* anterior = actual->getPrev();  // Corrección aquí
+        MPointer<DLLNode<T>> anterior = actual->getPrev();  // Corrección aquí
 
         while (anterior != nullptr && anterior->getData() > clave) {  // Corrección aquí
             anterior->getNext()->setData(anterior->getData());  // Corrección aquí

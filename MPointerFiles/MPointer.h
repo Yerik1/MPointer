@@ -20,12 +20,13 @@ class MPointer {
     MPointerGC* gC = MPointerGC::GetInstance();
 
 private:
+    bool hasValue = false;
     int ID;
     T* Mptr = nullptr;  // Se crea en nulo
 
     //Constructor
     MPointer(){
-        Mptr = new T();
+        //Mptr = new T();
         ID = gC->registerMPointer(Mptr, getType<T>()); // Asigna un id
     }
 public:
@@ -57,7 +58,7 @@ public:
 
     // Sobrecarga de *
     T& operator*(){
-        return *this->Mptr;
+        return *Mptr;
     }
 
     // Sobrecarga de &, devuelve el valor de ptr
@@ -71,18 +72,33 @@ public:
 
     MPointer<T>& operator=(const U& valor) {
         //se compara que el tipo de U sea el mismo del MPointer
-        static_assert(std::is_same_v<T, U>, "Tipos incompatibles");
+        //static_assert(std::is_same_v<T, U>, "Tipos incompatibles");
+        hasValue = true;
         *Mptr = valor;
+        return *this;
+    }
+
+    // Operador de asignación para puntero a tipo T
+    MPointer<T>& operator=(T* ptr) {
+        if (Mptr != ptr) {
+            hasValue = true;
+            if (Mptr) {
+                bool dtonant = gC->deleteRef(ID);
+                deletePtr(dtonant);
+            }
+            Mptr = ptr;
+        }
         return *this;
     }
 
     // Operador de asignación para otro Mpointer<T>
     MPointer<T>& operator=(const MPointer<T>& puntero) {
         if (this != &puntero) {
+            hasValue = true;
             Mptr = (puntero.Mptr); //Hace una copia
             gC->addRef(puntero.ID);
             bool dtonant = gC->deleteRef(ID);
-            deletePtr(dtonant);
+            //deletePtr(dtonant);
             ID = puntero.ID;
         }
         return *this;
@@ -96,8 +112,13 @@ public:
         }
     }
 
+    bool getHasValue() {
+        return hasValue;
+    }
 
-
+    // Método para verificar si dos MPointer apuntan a la misma dirección
+    bool isSameAddress(const MPointer<T>& other) const {
+        return this->Mptr == other.Mptr;
+    }
 };
-
 #endif // MPOINTER_H

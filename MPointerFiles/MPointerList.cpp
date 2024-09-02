@@ -76,6 +76,13 @@ void LinkedList::print() {
                      << endl;
                 break;
             }
+            case DataType::UNKNOWN: {
+                cout << "ID: " << current->id
+                     << ", Direccion: " << current->address
+                     << ", Referencias: " << current->refCount
+                     << endl;
+                break;
+            }
         }
         current = current->next;
     }

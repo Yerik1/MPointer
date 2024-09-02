@@ -4,61 +4,29 @@
 
 #ifndef DLLNODE_H
 #define DLLNODE_H
-#include "../../MPointerFiles/MPointer.cpp"
+#include "../../MPointerFiles/MPointer.h"
 template <typename T>
 class DLLNode {
 private:
     T data;
-    DLLNode<T>* prev;
-    DLLNode<T>* next;
+    MPointer<DLLNode> prev;
+    MPointer<DLLNode> next;
 
 public:
     // Constructor
-    DLLNode(T valor) : data(valor), prev(nullptr), next(nullptr) {}
+    DLLNode(T valor) : data(valor), prev(MPointer<DLLNode<T>>::New()), next(MPointer<DLLNode<T>>::New()) {}
 
     // Métodos para obtener y establecer el dato
     T getData() const;
     void setData(T valor);
 
     // Métodos para obtener y establecer el nodo anterior
-    DLLNode<T>* getPrev() const;
-    void setPrev(DLLNode<T>* nodo);
+    MPointer<DLLNode> getPrev() const;
+    void setPrev(MPointer<DLLNode> nodo);
 
     // Métodos para obtener y establecer el nodo siguiente
-    DLLNode<T>* getNext() const;
-    void setNext(DLLNode<T>* nodo);
+    MPointer<DLLNode> getNext() const;
+    void setNext(MPointer<DLLNode> nodo);
 };
-
-// Definiciones de las funciones miembro deben estar también en el .h
-
-template <typename T>
-T DLLNode<T>::getData() const {
-    return data;
-}
-
-template <typename T>
-void DLLNode<T>::setData(T valor) {
-    data = valor;
-}
-
-template <typename T>
-DLLNode<T>* DLLNode<T>::getPrev() const {
-    return prev;
-}
-
-template <typename T>
-void DLLNode<T>::setPrev(DLLNode<T>* nodo) {
-    prev = nodo;
-}
-
-template <typename T>
-DLLNode<T>* DLLNode<T>::getNext() const {
-    return next;
-}
-
-template <typename T>
-void DLLNode<T>::setNext(DLLNode<T>* nodo) {
-    next = nodo;
-}
-
+#include "../DLLNode.cpp"
 #endif
