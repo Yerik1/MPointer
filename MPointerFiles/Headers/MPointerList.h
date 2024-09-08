@@ -48,5 +48,5 @@ public:
     int getIDAt(int index);          // Devuelve el ID del nodo en el índice dado
     int getRefCount(int id);         // Devuelve el conteo de referencias para un nodo con un ID dado
 };
-#include "MPointerList.cpp"
+#include "../MPointerList.cpp"
 #endif // MPOINTERLIST_H

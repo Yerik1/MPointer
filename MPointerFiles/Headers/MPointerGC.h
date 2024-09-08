@@ -41,5 +41,5 @@ public:
     // Método para detener el hilo del GC
     void stop();
 };
-#include "MPointerGC.cpp"
+#include "../MPointerGC.cpp"
 #endif // MPOINTERGC_H

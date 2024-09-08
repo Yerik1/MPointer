@@ -1,7 +1,7 @@
 //
 // Created by yerik on 8/31/24.
 //
-#include "MPointerList.h"
+#include "Headers/MPointerList.h"
 
 // Añade un nuevo puntero a la lista
 void LinkedList::newMpointer(int id, void* address, DataType type) {
@@ -78,7 +78,7 @@ void LinkedList::print() {
             }
             case DataType::UNKNOWN: {
                 cout << "ID: " << current->id
-                     << ", Direccion: " << current->address
+                     << ", Direccion: " << &current->address
                      << ", Referencias: " << current->refCount
                      << endl;
                 break;

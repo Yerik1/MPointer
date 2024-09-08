@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Headers/DoubleLinkedList.h"
 #include "Headers/SortingAlgorithms.h"
-#include "../MPointerFiles/MPointer.h"
+#include "../MPointerFiles/Headers/MPointer.h"
 
 int main() {
     MPointerGC* garbagecollector = MPointerGC::GetInstance();

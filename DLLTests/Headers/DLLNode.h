@@ -4,7 +4,7 @@
 
 #ifndef DLLNODE_H
 #define DLLNODE_H
-#include "../../MPointerFiles/MPointer.h"
+#include "../../MPointerFiles/Headers/MPointer.h"
 template <typename T>
 class DLLNode {
 private:
