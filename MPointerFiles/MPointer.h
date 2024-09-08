@@ -61,10 +61,7 @@ public:
         return *Mptr;
     }
 
-    // Sobrecarga de &, devuelve el valor de ptr
-    T operator&(){
-        return *Mptr;
-    }
+
 
 
     // Operador de asignación para el mismo tipo T
@@ -112,13 +109,17 @@ public:
         }
     }
 
-    bool getHasValue() {
+    bool getHasValue() const{
         return hasValue;
     }
 
     // Método para verificar si dos MPointer apuntan a la misma dirección
     bool isSameAddress(const MPointer<T>& other) const {
         return this->Mptr == other.Mptr;
+    }
+
+    T* getData() {
+        return this->Mptr;
     }
 };
 #endif // MPOINTER_H

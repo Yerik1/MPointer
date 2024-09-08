@@ -8,12 +8,24 @@ ListaDobleEnlazada<T>::ListaDobleEnlazada() : length(0) {}
 
 template <typename T>
 ListaDobleEnlazada<T>::~ListaDobleEnlazada() {
-    while (!head.getHasValue()) {
+    // Recorre la lista hasta que el tamaño sea 0
+    while (length > 0) {
+        // Guarda el nodo actual en un puntero temporal
         MPointer<DLLNode<T>> temp = head;
-        DLLNode<T> headNode=*head;
-        head = headNode.getNext();
+        // Mueve head al siguiente nodo
+        head = (head.getData())->getNext();
+        // Elimina el nodo actual y lo elimina del GC
         temp.deletePtr(true);
+        // Decrementa el tamaño de la lista
+        length--;
     }
+    // Asegura que tail también sea nullptr al final
+    tail = MPointer<DLLNode<T>>::New();
+    MPointerGC* garbagecollector = MPointerGC::GetInstance();
+    head.deletePtr(true);
+    tail.deletePtr(true);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    garbagecollector->debug();
 }
 
 template <typename T>
@@ -38,8 +50,8 @@ void ListaDobleEnlazada<T>::headAppend(T valor) {
     if (!head.getHasValue()) {
         head = tail = nuevoNodo;
     } else {
-        (*nuevoNodo).setNext(head);
-        (*head).setPrev(nuevoNodo);
+        (nuevoNodo.getData())->setNext(head);
+        (head.getData())->setPrev(nuevoNodo);
         head = nuevoNodo;
     }
     length++;
@@ -52,8 +64,8 @@ void ListaDobleEnlazada<T>::append(T valor) {
     if (!tail.getHasValue()) {
         head = tail = nuevoNodo;
     } else {
-        (*tail).setNext(nuevoNodo);
-        (*nuevoNodo).setPrev(tail);
+        (tail.getData())->setNext(nuevoNodo);
+        (nuevoNodo.getData())->setPrev(tail);
         tail = nuevoNodo;
     }
     length++;
@@ -65,7 +77,14 @@ void ListaDobleEnlazada<T>::deleteNode(int posicion) {
         std::cerr << "Posición inválida." << std::endl;
         return;
     }
-
+    if (length == 1 && posicion == 0) {
+        head.deletePtr(true);  // Liberar head
+        //tail.deletePtr(true);  // Liberar tail
+        head = MPointer<DLLNode<T>>::New();
+        tail = MPointer<DLLNode<T>>::New();
+        length--;
+        return;
+    }
     MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
     int indice;
 
@@ -73,42 +92,44 @@ void ListaDobleEnlazada<T>::deleteNode(int posicion) {
         actual = head;
         indice = 0;
         while (indice < posicion) {
-            actual = (*actual).getNext();
+            actual = (actual.getData())->getNext();
             indice++;
         }
     } else {
         actual = tail;
         indice = length - 1;
         while (indice > posicion) {
-            actual = (*actual).getPrev();
+            actual = (actual.getData())->getPrev();
             indice--;
         }
     }
 
     if (actual.getHasValue()) {
         if (actual.isSameAddress(head)) {
-            head = (*head).getNext();
+            head = (head.getData())->getNext();
             if (head.getHasValue()) {
-                (*head).setPrev(MPointer<DLLNode<T>>::New());
+                (head.getData())->setPrev(MPointer<DLLNode<T>>::New());
             }
         } else if (actual.isSameAddress(tail)) {
-            tail = (*tail).getPrev();
+            tail = (tail.getData())->getPrev();
             if (tail.getHasValue()) {
-                (*tail).setNext(MPointer<DLLNode<T>>::New());
+                (tail.getData())->setNext(MPointer<DLLNode<T>>::New());
             }
         } else {
-            MPointer<DLLNode<T>> temp=(*actual).getPrev();
-            (*temp).setNext((*actual).getNext());
-            temp=(*actual).getNext();
-            (*temp).setPrev((*actual).getPrev());
-
+            MPointer<DLLNode<T>> temp = (actual.getData())->getPrev();
+            (temp.getData())->setNext((actual.getData())->getNext());
+            temp = (actual.getData())->getNext();
+            (temp.getData())->setPrev((actual.getData())->getPrev());
         }
 
+        actual.deletePtr(true);  // Asegúrate de eliminar el nodo actual del GC
         length--;
+
     } else {
         std::cerr << "Error al intentar eliminar en posición." << std::endl;
     }
 }
+
 
 template <typename T>
 void ListaDobleEnlazada<T>::replace(int posicion, T nuevoValor) {
@@ -124,20 +145,20 @@ void ListaDobleEnlazada<T>::replace(int posicion, T nuevoValor) {
         actual = head;
         indice = 0;
         while (indice < posicion) {
-            actual = (*actual).getNext();
+            actual = (actual.getData())->getNext();
             indice++;
         }
     } else {
         actual = tail;
         indice = length - 1;
         while (indice > posicion) {
-            actual = (*actual).getPrev();
+            actual = (actual.getData())->getPrev();
             indice--;
         }
     }
 
     if (actual.getHasValue()) {
-        (*actual).setData(nuevoValor);
+        (actual.getData())->setData(nuevoValor);
     } else {
         std::cerr << "Error al intentar reemplazar en posición." << std::endl;
     }
@@ -145,14 +166,16 @@ void ListaDobleEnlazada<T>::replace(int posicion, T nuevoValor) {
 
 template <typename T>
 void ListaDobleEnlazada<T>::printList() {
-    MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
-    actual = head;
-    while (!actual.isSameAddress((*tail).getNext())) {
-        std::cout << (*actual).getData() << std::endl;
-        actual = (*actual).getNext();
+    if(length>0) {
+        MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
+        actual = head;
+        while (!actual.isSameAddress((tail.getData())->getNext())) {
+            std::cout << (actual.getData())->getData() << std::endl;
+            actual = (actual.getData())->getNext();
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
-}
 
+}
 
 

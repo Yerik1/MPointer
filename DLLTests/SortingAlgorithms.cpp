@@ -7,24 +7,24 @@
 // Función para intercambiar manualmente los datos de dos nodos
 template <typename T>
 void swap(MPointer<DLLNode<T>> a, MPointer<DLLNode<T>> b) {
-    T temp = (*a).getData();  // Corrección aquí
-    (*a).setData((*b).getData());  // Corrección aquí
-    (*b).setData(temp);  // Corrección aquí
+    T temp = (a.getData())->getData();  // Corrección aquí
+    (a.getData())->setData((b.getData())->getData());  // Corrección aquí
+    (b.getData())->setData(temp);  // Corrección aquí
 }
 
 // Algoritmo de QuickSort
 template <typename T>
 MPointer<DLLNode<T>> partition(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> alto) {
-    T pivote = (*alto).getData();  // Corrección aquí
-    MPointer<DLLNode<T>> i = (*bajo).getPrev();  // Corrección aquí
+    T pivote = (alto.getData())->getData();  // Corrección aquí
+    MPointer<DLLNode<T>> i = (bajo.getData())->getPrev();  // Corrección aquí
 
-    for (MPointer<DLLNode<T>> j = bajo; !j.isSameAddress(alto); j = (*j).getNext()) {  // Corrección aquí
-        if ((*j).getData() <= pivote) {  // Corrección aquí
-            i = (!i.getHasValue()) ? bajo : (*i).getNext();  // Corrección aquí
+    for (MPointer<DLLNode<T>> j = bajo; !j.isSameAddress(alto); j = (j.getData())->getNext()) {  // Corrección aquí
+        if ((j.getData())->getData() <= pivote) {  // Corrección aquí
+            i = (!i.getHasValue()) ? bajo : (i.getData())->getNext();  // Corrección aquí
             swap(i, j);  // Corrección aquí
         }
     }
-    i = (!i.getHasValue()) ? bajo : (*i).getNext();  // Corrección aquí
+    i = (!i.getHasValue()) ? bajo : (i.getData())->getNext();  // Corrección aquí
     swap(i, alto);  // Corrección aquí
     return i;
 }
@@ -32,10 +32,10 @@ MPointer<DLLNode<T>> partition(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> a
 
 template <typename T>
 void quickSortRec(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> alto) {
-    if (!alto.getHasValue() && !bajo.isSameAddress(alto) && !bajo.isSameAddress((*alto).getNext())) {  // Corrección aquí
+    if (!alto.getHasValue() && !bajo.isSameAddress(alto) && !bajo.isSameAddress((alto.getData())->getNext())) {  // Corrección aquí
         MPointer<DLLNode<T>> p = partition(bajo, alto);  // Corrección aquí
-        quickSortRec(bajo, (*p).getPrev());  // Corrección aquí
-        quickSortRec((*p).getNext(), alto);  // Corrección aquí
+        quickSortRec(bajo, (p.getData())->getPrev());  // Corrección aquí
+        quickSortRec((p.getData())->getNext(), alto);  // Corrección aquí
     }
 }
 
