@@ -2,7 +2,7 @@
 
 
 template <typename T>
-MPointer<T>::MPointer() {
+MPointer<T>::MPointer() : Mptr(nullptr){
     ID = gC->registerMPointer(Mptr, getType<T>()); // Asigna un id
 }
 
@@ -11,6 +11,7 @@ MPointer<T>::MPointer(const MPointer & original) {
     Mptr = (original.Mptr);
     ID = (original.ID); // Asignar el mismo ID para añadir una ref
     gC->addRef(ID);
+
 }
 
 template <typename T>
@@ -29,14 +30,15 @@ MPointer<T> MPointer<T>::New() {
 
 template <typename T>
 T& MPointer<T>::operator*() {
+    hasValue = true;
+    Mptr = new T();
+    gC->changeAddress(ID,Mptr);
     return *Mptr;
 }
 
 template <typename T>
 template <typename U>
 MPointer<T>& MPointer<T>::operator=(const U& valor) {
-    hasValue = true;
-    *Mptr = valor;
     return *this;
 }
 

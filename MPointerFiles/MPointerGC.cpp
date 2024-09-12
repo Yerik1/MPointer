@@ -55,6 +55,11 @@ bool MPointerGC::deleteRef(int id) {
     return (ref == 0);  // Devolver true si no hay más referencias
 }
 
+void MPointerGC::changeAddress(int id, void* address) {
+    list.changeAddress(id, address);
+}
+
+
 // Método de depuración para imprimir información
 void MPointerGC::debug() {
     list.print();  // Supone que print es correcto en LinkedList

@@ -42,6 +42,7 @@ public:
     void newMpointer(int id, void* address, DataType type);
     void addRef(int identifier);
     int substractRef(int identifier);
+    void changeAddress(int identifier, void* address);
     void remove(int identifier);
     void print();
     int getSize();                      // Devuelve el número de nodos en la lista

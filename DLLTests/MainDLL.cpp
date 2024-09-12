@@ -41,7 +41,7 @@ int main() {
 
     std::this_thread::sleep_for(std::chrono::seconds(3)); // Espera para ver los mensajes de GC
     garbagecollector->debug();
-    /**
+
     lista.deleteNode(0);
     std::cout << "Después de eliminar en posición 0: "<< endl;
     lista.printList();
@@ -54,6 +54,6 @@ int main() {
     std::cout << "Después de eliminar en posición 0: "<< endl;
     lista.printList();
     std::this_thread::sleep_for(std::chrono::seconds(3)); // Espera para ver los mensajes de GC
-    garbagecollector->debug();**/
+    garbagecollector->debug();
     return 0;
 }

@@ -42,6 +42,16 @@ int LinkedList::substractRef(int identifier) {
     return -1;  // Retorna un valor no válido si no se encuentra
 }
 
+void LinkedList::changeAddress(int identifier, void* address) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->id == identifier) {
+            current->address = address;
+        }
+        current = current->next;
+    }
+}
+
 // Imprime la lista para depuración
 void LinkedList::print() {
     cout << "-----------INICIO--LISTA-----------" << endl;

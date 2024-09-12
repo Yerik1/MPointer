@@ -37,6 +37,7 @@ public:
     void addRef(int id);                // Añadir una referencia
     bool deleteRef(int id);             // Eliminar una referencia
     void debug();                        // Función de depuración
+    void changeAddress(int id,void* address);
 
     // Método para detener el hilo del GC
     void stop();
