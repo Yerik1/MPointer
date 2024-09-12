@@ -34,7 +34,7 @@ int main() {
     lista.printList();
     garbagecollector->debug();
 
-    quickSort(lista);
+    bubbleSort(lista);
     std::cout << "Lista después de QuickSort: "<< endl;
     lista.printList();
     garbagecollector->debug();

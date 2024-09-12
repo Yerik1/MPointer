@@ -10,6 +10,7 @@ template <typename T>
 MPointer<T>::MPointer(const MPointer & original) {
     Mptr = (original.Mptr);
     ID = (original.ID); // Asignar el mismo ID para añadir una ref
+    hasValue = original.hasValue;
     gC->addRef(ID);
 
 }

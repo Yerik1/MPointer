@@ -32,7 +32,7 @@ MPointer<DLLNode<T>> partition(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> a
 
 template <typename T>
 void quickSortRec(MPointer<DLLNode<T>> bajo, MPointer<DLLNode<T>> alto) {
-    if (!alto.getHasValue() && !bajo.isSameAddress(alto) && !bajo.isSameAddress((alto.getData())->getNext())) {  // Corrección aquí
+    if (alto.getHasValue() && !bajo.isSameAddress(alto) && !bajo.isSameAddress((alto.getData())->getNext())) {  // Corrección aquí
         MPointer<DLLNode<T>> p = partition(bajo, alto);  // Corrección aquí
         quickSortRec(bajo, (p.getData())->getPrev());  // Corrección aquí
         quickSortRec((p.getData())->getNext(), alto);  // Corrección aquí
@@ -47,21 +47,21 @@ void quickSort(ListaDobleEnlazada<T>& lista) {
 // Algoritmo de Bubble Sort
 template <typename T>
 void bubbleSort(ListaDobleEnlazada<T>& lista) {
-    if (!lista.getHead()) return;  // Corrección aquí
+    if (!lista.getHead().getHasValue()) return;  // Corrección aquí
 
     bool swapped;
     MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
 
     do {
         swapped = false;
-        actual = lista.getHead();  // Corrección aquí
+        actual = lista.getHead();
 
-        while (actual->getNext() != nullptr) {  // Corrección aquí
-            if (actual->getData() > actual->getNext()->getData()) {  // Corrección aquí
-                std::swap(actual->getData(), actual->getNext()->getData());  // Corrección aquí
+        while (actual.getData()->getNext().getHasValue()) {
+            if (actual.getData()->getData() > actual.getData()->getNext().getData()->getData()) {
+                swap(actual, actual.getData()->getNext());
                 swapped = true;
             }
-            actual = actual->getNext();  // Corrección aquí
+            actual = actual.getData()->getNext();
         }
     } while (swapped);
 }
