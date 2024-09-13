@@ -14,7 +14,6 @@ enum class DataType {
     UNKNOWN
 };
 
-// Node, tiene todos los datos que necesita
 struct Node {
     int id;
     void* address = nullptr;

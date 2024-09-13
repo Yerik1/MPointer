@@ -39,7 +39,7 @@ int LinkedList::substractRef(int identifier) {
         }
         current = current->next;
     }
-    return -1;  // Retorna un valor no válido si no se encuentra
+    return -1;
 }
 
 void LinkedList::changeAddress(int identifier, void* address) {
@@ -121,7 +121,7 @@ int LinkedList::getIDAt(int index) {
         count++;
         current = current->next;
     }
-    return -1;  // Retorna -1 si el índice está fuera de rango
+    return -1;
 }
 
 // Devuelve el conteo de referencias para un nodo con un ID dado

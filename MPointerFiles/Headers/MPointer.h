@@ -65,6 +65,6 @@ public:
     T* getData();
 };
 
-#include "../MPointer.cpp" // Incluye las implementaciones en un archivo .tpp
+#include "../MPointer.cpp"
 
 #endif // MPOINTER_H

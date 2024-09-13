@@ -40,18 +40,18 @@ MPointerGC* MPointerGC::GetInstance() {
 int MPointerGC::registerMPointer(void* address, DataType type) {
     this->autoid++;
     int iD = this->autoid;
-    this->list.newMpointer(iD, address, type);  // Supone que newMpointer es correcto en LinkedList
+    this->list.newMpointer(iD, address, type);
     return iD;
 }
 
 // Método para añadir una referencia a un puntero
 void MPointerGC::addRef(int id) {
-    list.addRef(id);  // Supone que addRef es correcto en LinkedList
+    list.addRef(id);
 }
 
 // Método para eliminar una referencia a un puntero
 bool MPointerGC::deleteRef(int id) {
-    int ref = list.substractRef(id);  // Supone que deleteRef es correcto en LinkedList
+    int ref = list.substractRef(id);
     return (ref == 0);  // Devolver true si no hay más referencias
 }
 
@@ -62,7 +62,7 @@ void MPointerGC::changeAddress(int id, void* address) {
 
 // Método de depuración para imprimir información
 void MPointerGC::debug() {
-    list.print();  // Supone que print es correcto en LinkedList
+    list.print();
 }
 
 // Método para detener el hilo del GC
@@ -77,10 +77,10 @@ void MPointerGC::verifyReferences() {
 
         std::lock_guard<std::mutex> lock(mutexx);  // Sincronización
 
-        // Aquí, agregamos la lógica para verificar y eliminar punteros sin referencias
-        for (int i = 0; i < list.getSize(); ++i) {  // Supone que existe un método size() en LinkedList
-            int id = list.getIDAt(i);  // Supone que existe un método getIDAt() en LinkedList
-            if (list.getRefCount(id) <= 0) {  // Supone que existe un método getRefCount() en LinkedList
+        // lógica para verificar y eliminar punteros sin referencias
+        for (int i = 0; i < list.getSize(); ++i) {
+            int id = list.getIDAt(i);
+            if (list.getRefCount(id) <= 0) {
                 list.remove(id);  // Eliminar el nodo del puntero sin referencias
                 std::cout << "GC: Nodo con ID " << id << " eliminado por falta de referencias." << std::endl;
             }

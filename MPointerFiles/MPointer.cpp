@@ -18,7 +18,6 @@ MPointer<T>::MPointer(const MPointer & original) {
 template <typename T>
 MPointer<T>::~MPointer() {
     if (gC->deleteRef(ID)) {
-        //delete Mptr;
         Mptr = nullptr;
     }
 }
@@ -40,6 +39,9 @@ T& MPointer<T>::operator*() {
 template <typename T>
 template <typename U>
 MPointer<T>& MPointer<T>::operator=(const U& valor) {
+    hasValue = true;
+    Mptr = new T(valor);
+    gC->changeAddress(ID,Mptr);
     return *this;
 }
 
@@ -62,7 +64,7 @@ MPointer<T>& MPointer<T>::operator=(const MPointer<T>& puntero) {
         hasValue = true;
         Mptr = (puntero.Mptr); // Hace una copia
         gC->addRef(puntero.ID);
-        bool dtonant = gC->deleteRef(ID);
+        gC->deleteRef(ID);
         ID = puntero.ID;
     }
     return *this;
@@ -72,6 +74,7 @@ template <typename T>
 void MPointer<T>::deletePtr(bool dtonant) {
     if (dtonant) {
         delete Mptr;
+        gC->deleteRef(ID);
         Mptr = nullptr;
     }
 }

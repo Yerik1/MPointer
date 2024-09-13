@@ -8,14 +8,19 @@ ListaDobleEnlazada<T>::ListaDobleEnlazada() : length(0) {}
 
 template <typename T>
 ListaDobleEnlazada<T>::~ListaDobleEnlazada() {
+
     // Recorre la lista hasta que el tamaño sea 0
     while (length > 0) {
+
         // Guarda el nodo actual en un puntero temporal
         MPointer<DLLNode<T>> temp = head;
+
         // Mueve head al siguiente nodo
         head = (head.getData())->getNext();
+
         // Elimina el nodo actual y lo elimina del GC
         temp.deletePtr(true);
+
         // Decrementa el tamaño de la lista
         length--;
     }
@@ -78,8 +83,7 @@ void ListaDobleEnlazada<T>::deleteNode(int posicion) {
         return;
     }
     if (length == 1 && posicion == 0) {
-        head.deletePtr(true);  // Liberar head
-        //tail.deletePtr(true);  // Liberar tail
+        head.deletePtr(true);  // Liberar head y tail
         head = MPointer<DLLNode<T>>::New();
         tail = MPointer<DLLNode<T>>::New();
         length--;
@@ -122,7 +126,7 @@ void ListaDobleEnlazada<T>::deleteNode(int posicion) {
             (temp.getData())->setPrev((actual.getData())->getPrev());
         }
 
-        actual.deletePtr(true);  // Asegúrate de eliminar el nodo actual del GC
+        actual.deletePtr(true);
         length--;
 
     } else {
