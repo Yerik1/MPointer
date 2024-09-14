@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/MPointer.dir/DLLTests/Gtest.cpp.o -o MPointer  /usr/lib/x86_64-linux-gnu/libgtest.a -lpthread

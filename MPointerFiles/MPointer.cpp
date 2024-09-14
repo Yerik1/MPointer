@@ -30,10 +30,13 @@ MPointer<T> MPointer<T>::New() {
 
 template <typename T>
 T& MPointer<T>::operator*() {
-    hasValue = true;
-    Mptr = new T();
-    gC->changeAddress(ID,Mptr);
+    if (Mptr==nullptr) {
+        hasValue = true;
+        Mptr = new T();
+        gC->changeAddress(ID,Mptr);
+    }
     return *Mptr;
+
 }
 
 template <typename T>

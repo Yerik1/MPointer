@@ -181,5 +181,40 @@ void ListaDobleEnlazada<T>::printList() {
     }
 
 }
+template <typename T>
+T ListaDobleEnlazada<T>::get(int posicion) const {
+    if (posicion < 0 || posicion >= length) {
+        throw std::out_of_range("Posición inválida");
+    }
 
+    MPointer<DLLNode<T>> actual = MPointer<DLLNode<T>>::New();
+    int indice;
+
+    if (posicion < length / 2) {
+        actual = head;
+        indice = 0;
+        while (indice < posicion) {
+            actual = (actual.getData())->getNext();
+            indice++;
+        }
+    } else {
+        actual = tail;
+        indice = length - 1;
+        while (indice > posicion) {
+            actual = (actual.getData())->getPrev();
+            indice--;
+        }
+    }
+
+    if (actual.getHasValue()) {
+        return (actual.getData())->getData();
+    }
+
+    throw std::runtime_error("Error al acceder al valor.");
+}
+
+template <typename T>
+bool ListaDobleEnlazada<T>::isEmpty() const {
+    return length == 0;
+}
 

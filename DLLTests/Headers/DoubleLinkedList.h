@@ -45,6 +45,10 @@ public:
 
     // Imprime la lista
     void printList();
+
+    T get(int posicion) const;
+
+    bool isEmpty() const;
 };
 
 #include "../DoubleLinkedList.cpp"

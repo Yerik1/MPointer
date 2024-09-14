@@ -1,1 +1,4 @@
-CMakeLists.txt not found in /home/yerik/Desktop/MPointer Select CMakeLists.txt
+/snap/clion/292/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S /home/yerik/Desktop/MPointer -B /home/yerik/Desktop/MPointer/cmake-build-release
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/yerik/Desktop/MPointer/cmake-build-release
